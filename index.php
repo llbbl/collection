@@ -26,7 +26,7 @@ $events=json_decode(file_get_contents(__DIR__.'/event.json'),true);
             return 1;
     }
 })->sum();*/
-$lookUp=[
+/*②$lookUp=[
     'PushEvent'=>5,
     'CreateEvent'=>4,
     'WatchEvent'=>3,
@@ -38,5 +38,35 @@ $result=collect($events)->pluck('type')->map(function($eventType){
         'WatchEvent'=>3,
     ];
    return  collect($lookUp)->get($eventType,1);
-})->sum();
-dd($result);
+})->sum();*/
+
+ class GithubScore{
+     protected $events;
+     function __construct($events)
+     {
+         $this->events=$events;
+     }
+
+     public static function score($events)
+     {
+      return (new static($events))->scoreEvent();
+
+     }
+
+     public function scoreEvent()
+     {
+         return   collect($this->events)->pluck('type')->map(function($eventType){
+             return $this->lookup_event_score($eventType);
+         })->sum();
+    }
+     public  function lookup_event_score($eventType)
+     {
+         $lookUp=[
+             'PushEvent'=>5,
+             'CreateEvent'=>4,
+             'WatchEvent'=>3,
+         ];
+         return  collect($lookUp)->get($eventType,1);
+     }
+ }
+dd(GithubScore::score($events));
