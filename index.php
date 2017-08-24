@@ -69,4 +69,18 @@ $result=collect($events)->pluck('type')->map(function($eventType){
          return  collect($lookUp)->get($eventType,1);
      }
  }
-dd(GithubScore::score($events));
+//dd(GithubScore::score($events));
+
+$employees=[
+    [
+        'name'=>'zhanwgei',
+        'email'=>'664886892@qq.com'
+    ],
+    [
+        'name'=>'jelly',
+        'email'=>'jelly@laravist.com'
+    ]
+];
+
+ $result=collect($employees)->pluck('email','name')->toArray();
+ dd($result);
